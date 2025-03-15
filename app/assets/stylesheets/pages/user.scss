@@ -1,0 +1,95 @@
+/* User profile */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.profile-info h1 {
+  margin-bottom: 5px;
+}
+
+.profile-meta {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.profile-tabs {
+  margin-top: 20px;
+}
+
+.tabs-nav {
+  display: flex;
+  border-bottom: 1px solid var(--medium-gray);
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-light);
+
+  &.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+  }
+}
+
+.tab-content {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+.user-posts, .user-comments {
+  margin-top: 20px;
+}
+
+.post-item, .comment-item {
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-info, .comment-info {
+  flex: 1;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  background-color: var(--light-gray);
+  border-radius: var(--border-radius);
+
+  p {
+    margin-bottom: 15px;
+    color: var(--text-light);
+  }
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+
+  &.admin {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+  }
+}

@@ -1,0 +1,30 @@
+/*
+ * Main application stylesheet
+ * Imports all other stylesheets
+ */
+
+// Import base styles
+@import "base/variables";
+@import "base/reset";
+@import "base/typography";
+
+// Import components
+@import "components/buttons";
+@import "components/forms";
+@import "components/dropdown";
+
+// Import layouts
+@import "layouts/header";
+@import "layouts/footer";
+@import "layouts/container";
+
+// Import pages
+@import "pages/posts";
+@import "pages/comments";
+@import "pages/user";
+
+// Import utilities
+@import "utilities";
+
+// Import responsive styles
+@import "responsive";

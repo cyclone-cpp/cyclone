@@ -1,0 +1,45 @@
+# Simple Mason file for Cyclone app
+mason(
+name = "cyclone-app",
+version = "0.1.0"
+)
+
+cpp_project(
+name = "myapp",
+version = "0.1.0",
+deps = [
+    "cyclone-core:0.5.2",
+    "cyclone-http:0.5.2",
+    "cyclone-db:0.5.2",
+    "cyclone-views:0.5.2",
+    "boost:1.78.0",
+    "sqlite3:3.38.0"
+]
+)
+
+cpp_binary(
+name = "server",
+srcs = glob(["app/**/*.cpp", "config/**/*.cpp"]),
+hdrs = glob(["app/**/*.hpp", "config/**/*.hpp"]),
+includes = [".", "app", "config"],
+main = "config/main.cpp"
+)
+
+cpp_binary(
+name = "pulse",
+srcs = glob(["app/**/*.cpp", "config/**/*.cpp"]),
+hdrs = glob(["app/**/*.hpp", "config/**/*.hpp"]),
+includes = [".", "app", "config"],
+main = "config/pulse.cpp"
+)
+
+cpp_test(
+name = "tests",
+srcs = glob(["tests/**/*.cpp"]),
+hdrs = glob(["tests/**/*.hpp"]),
+includes = [".", "app", "config", "tests"],
+deps = [":myapp", "catch2:2.13.8"]
+)
+
+# Run with: mason build server
+# Tests with: mason test

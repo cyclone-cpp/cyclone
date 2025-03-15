@@ -1,0 +1,67 @@
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  background-color: var(--medium-gray);
+  color: var(--text-color);
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+
+  &:hover {
+    background-color: var(--primary-dark);
+  }
+}
+
+.btn-secondary {
+  background-color: white;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+
+  &:hover {
+    background-color: var(--light-gray);
+  }
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+
+  &:hover {
+    background-color: darken(#ea4335, 10%);
+  }
+}
+
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+.btn-like {
+  background: none;
+  border: 1px solid var(--medium-gray);
+  color: var(--text-light);
+  padding: 3px 8px;
+  font-size: 14px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+
+  &.liked {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    border-color: var(--primary-color);
+  }
+}

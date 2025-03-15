@@ -1,0 +1,55 @@
+<div id="comment-<%= @comment.id() %>" class="comment">
+    <div class="comment-header">
+        <span class="comment-author"><%= @comment.user().name() %></span>
+        <span class="comment-date"><%= timeAgo(@comment.createdAt()) %></span>
+    </div>
+
+    <div class="comment-content">
+        <%= @comment.content() %>
+    </div>
+
+    <div class="comment-footer">
+        <div class="comment-likes">
+            <span class="like-count"><%= @comment.likeCount() %> likes</span>
+
+            <% if (loggedIn()) { %>
+            <% if (hasLikedComment(@comment)) { %>
+            <form action="/comments/<%= @comment.id() %>/like" method="post" class="like-form">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn-like liked">Unlike</button>
+            </form>
+            <% } else { %>
+            <form action="/comments/<%= @comment.id() %>/like" method="post" class="like-form">
+                <button type="submit" class="btn-like">Like</button>
+            </form>
+            <% } %>
+            <% } %>
+        </div>
+
+        <% if (loggedIn() && (@current_user.id() == @comment.userId() || @current_user.isAdmin())) { %>
+        <div class="comment-actions">
+            <button class="btn-edit-comment" data-comment-id="<%= @comment.id() %>">Edit</button>
+
+            <form action="/posts/<%= @comment.postId() %>/comments/<%= @comment.id() %>" method="post" class="inline-form">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
+            </form>
+        </div>
+
+        <div id="edit-form-<%= @comment.id() %>" class="edit-comment-form hidden">
+            <form action="/posts/<%= @comment.postId() %>/comments/<%= @comment.id() %>" method="post">
+                <input type="hidden" name="_method" value="PATCH">
+
+                <div class="form-group">
+                    <textarea name="comment[content]" rows="3" required><%= @comment.content() %></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn-cancel-edit" data-comment-id="<%= @comment.id() %>">Cancel</button>
+                </div>
+            </form>
+        </div>
+        <% } %>
+    </div>
+</div>

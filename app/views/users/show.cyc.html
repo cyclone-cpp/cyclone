@@ -1,0 +1,96 @@
+<% setTitle(@user.name() + "'s Profile") %>
+
+<div class="profile-container">
+    <header class="profile-header">
+        <div class="profile-info">
+            <h1><%= @user.name() %>'s Profile</h1>
+            <p class="profile-meta">Member since <%= formatDate(@user.createdAt(), "%B %d, %Y") %></p>
+
+            <% if (@user.isAdmin()) { %>
+            <span class="role-badge admin">Admin</span>
+            <% } %>
+        </div>
+
+        <% if (currentUser() && currentUser()->id() == @user.id()) { %>
+        <div class="profile-actions">
+            <a href="/profile" class="btn btn-secondary">Switch to My View</a>
+        </div>
+        <% } %>
+    </header>
+
+    <div class="public-profile-content">
+        <h2>Published Posts</h2>
+
+        <% if (@posts.empty()) { %>
+        <div class="empty-state">
+            <p><%= @user.name() %> hasn't published any posts yet.</p>
+        </div>
+        <% } else { %>
+        <div class="user-posts">
+            <% for (const auto& post : @posts) { %>
+            <div class="post-item">
+                <div class="post-info">
+                    <h3><a href="/posts/<%= post.id() %>"><%= post.title() %></a></h3>
+                    <div class="post-meta">
+                        <span class="post-date"><%= formatDate(post.createdAt(), "%B %d, %Y") %></span>
+                        <span class="post-comments"><%= post.commentCount() %> comments</span>
+                        <span class="post-likes"><%= post.likeCount() %> likes</span>
+                    </div>
+                    <p class="post-excerpt"><%= truncate(post.content(), 200) %></p>
+                </div>
+
+                <div class="post-actions">
+                    <a href="/posts/<%= post.id() %>" class="btn btn-sm">Read Post</a>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+
+        <% if (@posts.size() > 10) { %>
+        <div class="pagination">
+            <a href="/users/<%= @user.id() %>/posts" class="btn btn-secondary">View All Posts</a>
+        </div>
+        <% } %>
+    </div>
+
+    <div class="user-stats">
+        <div class="stat-item">
+            <h3>Posts</h3>
+            <div class="stat-value"><%= @posts.size() %></div>
+        </div>
+
+        <div class="stat-item">
+            <h3>Total Comments</h3>
+            <div class="stat-value"><%= Comment::where("post_id IN (SELECT id FROM posts WHERE user_id = ?)", @user.id()).count() %></div>
+        </div>
+
+        <div class="stat-item">
+            <h3>Total Likes</h3>
+            <div class="stat-value"><%= Like::where("post_id IN (SELECT id FROM posts WHERE user_id = ?)", @user.id()).count() %></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add any client-side interactivity needed for the public profile
+
+        // Example: Lazy load images if there are any
+        const lazyImages = document.querySelectorAll('img.lazy');
+        if (lazyImages.length > 0) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            lazyImages.forEach(img => imageObserver.observe(img));
+        }
+    });
+</script>

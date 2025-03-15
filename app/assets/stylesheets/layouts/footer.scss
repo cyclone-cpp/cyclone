@@ -1,0 +1,18 @@
+/* Footer styles */
+.main-footer {
+  background-color: var(--light-gray);
+  border-top: 1px solid var(--medium-gray);
+  padding: 20px 0;
+  margin-top: 40px;
+}
+
+.footer-nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin-top: 10px;
+}
+
+.footer-nav li {
+  margin: 0 10px;
+}

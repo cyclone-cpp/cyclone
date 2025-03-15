@@ -1,0 +1,93 @@
+<% setTitle("Edit Post") %>
+
+<div class="post-form-container">
+    <header class="page-header">
+        <h1>Edit Post</h1>
+        <div class="action-buttons">
+            <a href="/posts/<%= @post.id() %>" class="btn btn-secondary">Cancel</a>
+        </div>
+    </header>
+
+    <% if (exists("errors")) { %>
+    <div class="errors-container">
+        <h2>Errors prevented this post from being saved:</h2>
+        <ul class="errors-list">
+            <% for (const auto& error : @errors.all()) { %>
+            <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+    <% } %>
+
+    <form action="/posts/<%= @post.id() %>" method="post" class="post-form">
+        <input type="hidden" name="_method" value="PATCH">
+
+        <div class="form-group">
+            <label for="post_title">Title</label>
+            <input type="text" name="post[title]" id="post_title" value="<%= @post.title() %>" required
+                   class="form-control <%= exists("errors") && @errors.has("title") ? "has-error" : "" %>">
+
+            <% if (exists("errors") && @errors.has("title")) { %>
+            <div class="field-error"><%= @errors.first("title") %></div>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="post_content">Content</label>
+            <textarea name="post[content]" id="post_content" rows="20" required
+                      class="form-control <%= exists("errors") && @errors.has("content") ? "has-error" : "" %>"><%= @post.content() %></textarea>
+
+            <% if (exists("errors") && @errors.has("content")) { %>
+            <div class="field-error"><%= @errors.first("content") %></div>
+            <% } %>
+
+            <div class="form-help">
+                <p>You can use Markdown to format your post content.</p>
+            </div>
+        </div>
+
+        <% if (currentUser()->isAdmin()) { %>
+        <div class="form-group">
+            <label for="post_published">Published</label>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" name="post[published]" id="post_published" value="true" <%= @post.published() ? "checked" : "" %>>
+                <label for="post_published">Make this post public</label>
+            </div>
+        </div>
+        <% } %>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Update Post</button>
+            <a href="/posts/<%= @post.id() %>" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contentEditor = document.getElementById('post_content');
+
+        // Simple markdown preview functionality could be added here
+        // This is a placeholder for potential JS enhancements
+
+        // Form validation
+        document.querySelector('.post-form').addEventListener('submit', function(e) {
+            const title = document.getElementById('post_title').value.trim();
+            const content = contentEditor.value.trim();
+
+            if (!title) {
+                e.preventDefault();
+                alert('Title cannot be empty');
+                return false;
+            }
+
+            if (!content) {
+                e.preventDefault();
+                alert('Content cannot be empty');
+                return false;
+            }
+
+            return true;
+        });
+    });
+</script>

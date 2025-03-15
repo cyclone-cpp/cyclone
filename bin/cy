@@ -1,0 +1,263 @@
+# Cyclone CLI (`bin/cy`)
+
+The `bin/cy` command-line utility provides a comprehensive set of tools for developing, testing, and managing your Cyclone application.
+
+## Core Commands
+
+### Server Management
+
+```bash
+# Start the application server on the default port (3000)
+bin/cy server
+
+# Start the server on a specific port
+bin/cy server -p 8080
+
+# Start the server in development mode with auto-reloading
+bin/cy server --dev
+
+# Start the server in production mode
+bin/cy server --env production
+```
+
+### Background Processing
+
+```bash
+# Start the Pulse job processor (similar to Sidekiq)
+bin/cy pulse
+
+# Start Pulse with a specific number of worker threads
+bin/cy pulse -w 4
+
+# Start Pulse processing only specific queues
+bin/cy pulse -q default,mailers,notifications
+```
+
+## Database Operations
+
+### Migrations
+
+```bash
+# Generate a new migration
+bin/cy generate migration CreateUsers
+
+# Generate a migration with a table definition
+bin/cy generate migration CreatePosts --fields="title:string content:text user_id:integer published:boolean:index"
+
+# Run pending migrations
+bin/cy db:migrate
+
+# Roll back the last migration
+bin/cy db:rollback
+
+# Roll back a specific number of migrations
+bin/cy db:rollback -n 3
+
+# Reset the database (drop all tables and re-run migrations)
+bin/cy db:reset
+
+# Create the database
+bin/cy db:create
+
+# Drop the database
+bin/cy db:drop
+```
+
+### Database Management
+
+```bash
+# Run database seeder
+bin/cy db:seed
+
+# Dump schema to schema.sql file
+bin/cy db:schema:dump
+
+# Load schema from schema.sql file
+bin/cy db:schema:load
+```
+
+## Code Generation
+
+### Models
+
+```bash
+# Generate a model
+bin/cy generate model User name:string email:string:index
+
+# Generate a model with validations
+bin/cy generate model Post title:string:required content:text:required user:references published:boolean
+```
+
+### Controllers
+
+```bash
+# Generate a controller with default actions
+bin/cy generate controller Posts index show new create edit update destroy
+
+# Generate a controller with specified actions
+bin/cy generate controller Comments create destroy
+```
+
+### Resources
+
+```bash
+# Generate full resource (model, controller, views, routes)
+bin/cy generate resource Post title:string content:text user:references
+
+# Generate resource without certain actions
+bin/cy generate resource Comment content:text user:references post:references --skip-actions=edit,update
+```
+
+### Jobs
+
+```bash
+# Generate a background job class
+bin/cy generate job SendNotification
+
+# Generate a scheduled job
+bin/cy generate job DatabaseCleanup --scheduled="0 0 * * *"
+```
+
+### Mailers
+
+```bash
+# Generate a mailer
+bin/cy generate mailer UserMailer welcome password_reset
+```
+
+## Testing
+
+### Test Generation
+
+```bash
+# Generate model test
+bin/cy generate test model User
+
+# Generate controller test
+bin/cy generate test controller Posts
+
+# Generate integration test
+bin/cy generate test integration UserSignup
+```
+
+### Test Factories
+
+```bash
+# Generate a test factory
+bin/cy generate factory User
+
+# Generate a factory with traits
+bin/cy generate factory Post default:published with_comments:has_many:comments
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+bin/cy test
+
+# Run specific test file
+bin/cy test tests/models/user_test.hpp
+
+# Run tests matching a pattern
+bin/cy test --pattern="User*"
+
+# Run tests with specific seed
+bin/cy test --seed=12345
+```
+
+## Utility Commands
+
+### Console
+
+```bash
+# Start an interactive console
+bin/cy console
+
+# Execute a command in the console
+bin/cy console -e "User::find(1)->posts().count()"
+```
+
+### Routes
+
+```bash
+# List all defined routes
+bin/cy routes
+
+# Search routes containing a pattern
+bin/cy routes --grep=posts
+```
+
+### Logs
+
+```bash
+# Tail application logs
+bin/cy logs
+
+# Tail specific log file
+bin/cy logs --file=production.log
+```
+
+### Maintenance
+
+```bash
+# Clear application cache
+bin/cy cache:clear
+
+# Put application in maintenance mode
+bin/cy maintenance:on --message="Upgrading database"
+
+# Take application out of maintenance mode
+bin/cy maintenance:off
+```
+
+## Environment and Configuration
+
+```bash
+# Show current environment
+bin/cy env
+
+# Show configuration for the current environment
+bin/cy config
+
+# Validate configuration
+bin/cy config:validate
+```
+
+## Statistics and Performance
+
+```bash
+# Show application statistics
+bin/cy stats
+
+# Analyze application performance
+bin/cy analyze
+```
+
+## Application Management
+
+```bash
+# Create a new Cyclone application
+bin/cy new my_app
+
+# Add a plugin to the application
+bin/cy plugin:add cyclone-auth
+
+# Update the Cyclone framework
+bin/cy update
+```
+
+## Help and Documentation
+
+```bash
+# Show general help
+bin/cy help
+
+# Show help for a specific command
+bin/cy help generate
+
+# Show version information
+bin/cy version
+```
+
+Remember to make the `bin/cy` file executable using `chmod +x bin/cy` before attempting to run any of these commands.
